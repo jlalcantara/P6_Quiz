@@ -160,18 +160,22 @@ exports.randomplay = (req, res, next) =>{
 	
 	const {quiz, query} = req;
 	req.session.randomplay = req.session.randomplay || [];
-	const score = req.session.randomplay.length;	
+	const score = req.session.randomplay.length;
+	const whereOp = {'id':{[Sequelize.Op.notIn]: req.session.randomPlay}};
 	
-	models.quiz.count({where:{id: {[Sequelize.Op.notIn] : req.session.randomPlay}}})
+	models.quiz.count({where:whereOp})
 		.then(count => {
 			if(!count){
 				req.session.randomplay = [];
 				res.render('quizzes/random_none',{
-                    score:score
+                score:score
                 });
 			};	
-		return.models.quiz.findAll({
-			where: {id: {[Sequelize.Op.notIn] : req.session.randomPlay}}, offset: Math.floor(Math.random() * count), limit: 1})	
+		return models.quiz.findAll({
+            where: whereOp,
+            offset: Math.floor(Math.random() * count),
+            limit: 1
+        })	
 				.then(quizzes => {
 					return quizzes [0];
 				})
