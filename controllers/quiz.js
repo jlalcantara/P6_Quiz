@@ -167,7 +167,7 @@ exports.randomplay = (req, res, next) =>{
 		.then(count => {
 			if(!count){
 				req.session.randomplay = [];
-				res.render('quizzes/random_none',{
+				res.render('quizzes/random_nomore',{
                 score:score
                 });
 			};	
