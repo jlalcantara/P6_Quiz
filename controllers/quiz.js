@@ -159,14 +159,14 @@ exports.check = (req, res, next) => {
 exports.randomplay = (req, res, next) =>{
 	
 	const {quiz, query} = req;
-	req.session.randomplay = req.session.randomplay || [];
-	const score = req.session.randomplay.length;
+	req.session.randomPlay = req.session.randomPlay || [];
+	const score = req.session.randomPlay.length;
 	const whereOp = {'id':{[Sequelize.Op.notIn]: req.session.randomPlay}};
 	
 	models.quiz.count({where:whereOp})
 		.then(count => {
 			if(!count){
-				req.session.randomplay = [];
+				req.session.randomPlay = [];
 				res.render('quizzes/random_nomore',{
                 score:score
                 });
@@ -178,7 +178,7 @@ exports.randomplay = (req, res, next) =>{
         })	
 				.then(quizzes => {
 					return quizzes [0];
-				})
+				});
 		})
 		
 		.then(quiz =>{                      
