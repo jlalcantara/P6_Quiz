@@ -75,3 +75,42 @@ exports.destroy = (req, res, next) => {
     })
     .catch(error => next(error));
 };
+
+exports.edit =(req,res,next)=>{
+
+    const {quiz,tip}=req;
+
+    res.render('tips/edit',{quiz,tip});
+
+};
+
+exports.update=(req,res,next)=>{
+
+    const {quiz,tip} = req;
+    tip.text=req.body.text;
+    tip.accepted=false;
+
+    tip.save({fields: ["text","accepted"]})
+        .then(tip => {
+            req.flash('success', 'Tip edited successfully.');
+            res.redirect('/quizzes/' + req.params.quizId);
+        })
+        .catch(error => {
+            req.flash('error', 'Error editing the Tip: ' + error.message);
+            next(error);
+
+        });
+
+};
+
+exports.adminOrAuthorRequired=(req,res,next)=>{
+
+    const isAdmin = !!req.session.user.isAdmin;
+    const isAuthor= req.session.user.id===req.tip.authorId;
+
+    if(isAdmin || isAuthor){
+        next();// Si es autor o administrador llamo al siguiente middelware
+    }else{
+        res.send(403);//forbiden
+    }
+};

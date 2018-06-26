@@ -211,6 +211,8 @@ exports.play = (req, res, next) => {
         answer
     });
 };
+
+
 exports.randomPlay = (req,res,next) => {
 
     if(req.session.randomPlay===undefined){
@@ -238,6 +240,7 @@ exports.randomPlay = (req,res,next) => {
         });
 };
 
+
 // GET /quizzes/:quizId/check
 exports.check = (req, res, next) => {
 
@@ -252,6 +255,7 @@ exports.check = (req, res, next) => {
         answer
     });
 };
+
 
 exports.randomCheck = (req,res,next) => {
 
